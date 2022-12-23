@@ -33,7 +33,7 @@ namespace Booking.DomainService.TimeSuggestion
             var minTimeShift = 5; //supplierWorkday.Bookables.Min(b => b.Time.TimeSpan.TotalMinutes);
             foreach (var timeShift in supplierWorkday.TimeShifts)
             {
-                addTimeShifts(timeShift.TimeRange);
+                addTimeShifts(timeShift);
             }
 
             void addTimeShifts(TimeRange timeRange)

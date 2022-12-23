@@ -9,26 +9,38 @@ namespace Booking.SupplierWorkdayAggregate
 {
     class SupplierWorkday
     {
-        private readonly TimeSuggestionStrategy _timeSuggestionStrategy;
-        public readonly int _supplierId;
-        public readonly DateTime _day;
-        private readonly List<TimeShift> _timeShifts;
-        private readonly List<Bookable> _bookables;
-        private readonly List<BookedUp> _bookedUps;
-
+        private TimeSuggestionStrategy _timeSuggestionStrategy;
+        private int _supplierId;
+        private DateTime _day;
+        private List<TimeRange> _timeShifts;
+        private List<Bookable> _bookables;
+        private List<BookedUp> _bookedUps;
         public SupplierWorkday(TimeSuggestionStrategy timeSuggestionStrategy, int supplierId, DateTime day,
-            List<TimeShift> timeShifts, List<Bookable> bookables, List<BookedUp> bookedUps = null)
+            List<TimeRange> timeShifts, List<Bookable> bookables, List<BookedUp> bookedUps = null)
         {
             _timeSuggestionStrategy = timeSuggestionStrategy ?? throw new ArgumentNullException("timeSuggestionStrategy should not null.");
             _supplierId = supplierId != 0 ? supplierId : throw new ArgumentException("supplierId should not zero.");
             _day = day;
             _timeShifts = timeShifts == null || timeShifts.Count == 0 ? throw new Exception("Must have at least one time shift") : timeShifts;
-            _bookables = bookables == null || bookables.Count == 0 ? throw new Exception("Must have at least one time shift") : bookables;
+            _bookables = bookables == null || bookables.Count == 0 ? throw new Exception("Must have at least one bookable") : bookables;
             _bookedUps = bookedUps == null ? new List<BookedUp>() : bookedUps;
         }
+        private SupplierWorkday()
+        {
+        }
+        public static SupplierWorkday Initiale(int supplierId, DateTime day,
+            List<TimeRange> timeShifts, List<Bookable> bookables)
+        {
+            var s = new SupplierWorkday();
+            s._supplierId = supplierId != 0 ? supplierId : throw new ArgumentException("supplierId should not zero.");
+            s._day = day;
+            s._timeShifts = timeShifts == null || timeShifts.Count == 0 ? throw new Exception("Must have at least one time shift") : timeShifts;
+            s._bookables = bookables;
 
+            return s;
+        }
         public string Id => $"{_supplierId}_{_day.ToShortDateString()}";
-        public IReadOnlyList<TimeShift> TimeShifts => _timeShifts.AsReadOnly();
+        public IReadOnlyList<TimeRange> TimeShifts => _timeShifts.AsReadOnly();
         public IReadOnlyList<Bookable> Bookables => _bookables.AsReadOnly();
         public IReadOnlyList<BookedUp> BookedUps => _bookedUps.AsReadOnly();
         public bool IsFull(Bookable bookable)

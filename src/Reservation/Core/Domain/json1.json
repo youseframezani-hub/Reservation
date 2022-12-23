@@ -1,0 +1,40 @@
+{
+  "isSuccess": true,
+  "result": [
+    {
+      "type": "REGULAR",
+      "id": 20286578,
+      "staffId": 532470,
+      "serviceId": 919925,
+      "startDateTime": "2023-02-01T11:00:00",
+      "endDateTime": "2023-02-01T15:00:00",
+      "scheduleId": 311060,
+      "isOverrideBlock": false,
+      "recurringRule": {
+        "freq": "WEEKLY",
+        "byday": [ "MONDAY" ],
+        "count": 0,
+        "repeatEvery": 1,
+        "until": "2070-01-01T00:00:00"
+      }
+    },
+    {
+      "type": "REGULAR",
+      "id": 20286579,
+      "staffId": 532470,
+      "serviceId": 919926,
+      "startDateTime": "2023-02-01T11:00:00",
+      "endDateTime": "2023-02-01T15:00:00",
+      "scheduleId": 311060,
+      "isOverrideBlock": false,
+      "recurringRule": {
+        "freq": "WEEKLY",
+        "byday": [ "MONDAY" ],
+        "count": 0,
+        "repeatEvery": 1,
+        "until": "2070-01-01T00:00:00"
+      }
+    }
+  ],
+  "message": "Inserted successfully"
+}

@@ -4,9 +4,9 @@ using System.Text;
 
 namespace Booking.BookableAggregate
 {
-    class Bookable
+     class Bookable
     {
-        public Bookable(int id, string title, int capacity, Time time, int price, BookableType bookableType)
+        public Bookable(int id, string title, int capacity, Time time, int price, BookableType bookableType, int supplierId)
         {
             Id = id;
             Title = title;
@@ -14,9 +14,11 @@ namespace Booking.BookableAggregate
             Time = time;
             Price = price;
             BookableType = bookableType;
+            SupplierId = supplierId;
         }
 
         public int Id { get; private set; }
+        public int SupplierId { get; private set; }
         public string Title { get; private set; }
         public int Capacity { get; protected set; }
         public Time Time { get; private set; }
