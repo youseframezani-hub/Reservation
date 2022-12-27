@@ -5,7 +5,7 @@ namespace Booking.BookableAggregate
     class BookableFeatures<TFeatures> : Bookable
     {
         public BookableFeatures(int id, string title, int capacity, Time time, int price, BookableType bookableType, TFeatures features)
-            : base(id, title, capacity, time, price, bookableType)
+            : base(id, title, capacity, time, price, bookableType,0)
         {
             Features = features;
         }

@@ -1,6 +1,4 @@
 ﻿using Booking.Base;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Booking.BookableAggregate
 {

@@ -6,7 +6,7 @@ namespace Booking.SupplierWorkdayAggregate
     class BookedUp : Bookable
     {
         public BookedUp(Bookable bookable, TimeRange timeRange)
-            : base(bookable.Id, bookable.Title, bookable.Capacity, bookable.Time, bookable.Price, bookable.BookableType)
+            : base(bookable.Id, bookable.Title, bookable.Capacity, bookable.Time, bookable.Price, bookable.BookableType,0)
         {
             BookStatus = BookStatus.Booked;
             TimeRange = timeRange;
