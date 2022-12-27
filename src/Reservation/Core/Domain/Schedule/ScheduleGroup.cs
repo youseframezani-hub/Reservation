@@ -52,6 +52,9 @@ internal abstract class WorkSchedule
     => new WorkScheduleIRRegular(0, supllierId, serviceId, durationTime, startDate, endDate, isOverrideBlock, recurringRule);
 
 }
+/// <summary>
+/// Supplier has a regular business week for a service which has one or more intervals per day
+/// </summary>
 internal class WorkScheduleRegular : WorkSchedule
 {
     internal WorkScheduleRegular(int id, int supllierId, int serviceId, DurationTime durationTime, ScheduleGroup scheduleGroup, DayOfWeek dayOfWeek) : base(id, supllierId, serviceId, durationTime)
@@ -64,7 +67,12 @@ internal class WorkScheduleRegular : WorkSchedule
     public override DateTime StartDate => ScheduleGroup.StartDate;
     public override DateTime EndDate => ScheduleGroup.EndDate;
 }
-
+/// <summary>
+/// Supplier can define exceptions with regard to Reqular timetable.
+/// A specific date
+/// An interval with start date and End date
+/// Can override Block Times(optional)
+/// </summary>
 internal class WorkScheduleIRRegular : WorkSchedule
 {
     internal WorkScheduleIRRegular(int id, int supllierId, int serviceId, DurationTime durationTime, DateTime startDate, DateTime endDate, bool isOverrideBlock, Recurringrule recurringRule) : base(id, supllierId, serviceId, durationTime)
