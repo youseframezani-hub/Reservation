@@ -15,7 +15,7 @@ internal class ScheduleGroup
     public string Name { get; set; }
     public DateTime StartDate { get; set; }
     public DateTime EndDate { get; set; }
-    public ScheduleGroup Create(string name, DateTime startDate, DateTime? endDate)
+    public static ScheduleGroup Create(string name, DateTime startDate, DateTime? endDate)
     {
         return new ScheduleGroup
         {
@@ -48,8 +48,8 @@ internal abstract class WorkSchedule
     public abstract DateTime EndDate { get; }
     public static WorkScheduleRegular CreateRegular(int supllierId, int serviceId, DurationTime durationTime, ScheduleGroup scheduleGroup, DayOfWeek dayOfWeek)
     => new WorkScheduleRegular(0, supllierId, serviceId, durationTime, scheduleGroup, dayOfWeek);
-    public WorkScheduleIRRegular CreateIRRegular(int supllierId, int serviceId, DurationTime durationTime, DateTime startDate, DateTime endDate, bool isOverrideBlock, Recurringrule recurringRule)
-    => new WorkScheduleIRRegular(0, supllierId, serviceId, durationTime, startDate, endDate, isOverrideBlock, recurringRule);
+    public WorkScheduleIRRegular CreateIRRegular(int supllierId, int serviceId, DurationTime durationTime, DateTime startDate, bool isOverrideBlock, Recurringrule recurringRule)
+    => new WorkScheduleIRRegular(0, supllierId, serviceId, durationTime, startDate, isOverrideBlock, recurringRule);
 
 }
 /// <summary>
@@ -75,15 +75,14 @@ internal class WorkScheduleRegular : WorkSchedule
 /// </summary>
 internal class WorkScheduleIRRegular : WorkSchedule
 {
-    internal WorkScheduleIRRegular(int id, int supllierId, int serviceId, DurationTime durationTime, DateTime startDate, DateTime endDate, bool isOverrideBlock, Recurringrule recurringRule) : base(id, supllierId, serviceId, durationTime)
+    internal WorkScheduleIRRegular(int id, int supllierId, int serviceId, DurationTime durationTime, DateTime startDate, bool isOverrideBlock, Recurringrule recurringRule) : base(id, supllierId, serviceId, durationTime)
     {
         StartDate = startDate;
-        EndDate = endDate;
         IsOverrideBlock = isOverrideBlock;
         RecurringRule = recurringRule;
     }
     public override DateTime StartDate { get; }
-    public override DateTime EndDate { get; }
+    public override DateTime EndDate => RecurringRule.Until;
     public bool IsOverrideBlock { get; set; }
     public Recurringrule RecurringRule { get; set; }
 }
