@@ -1,10 +1,13 @@
+using Moq;
+using Reservation.Repositories.Abstractions;
+
 namespace Reservation.Tests;
 
-public class UnitTest1
+public class RepositoryTests
 {
     [Fact]
-    public void Test1()
+    public void ShouldGetOneCustomer_AfterAddingOne()
     {
-
+        var customerRepository = new Mock<ICustomerRepository>().Object;
     }
 }
