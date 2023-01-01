@@ -20,15 +20,6 @@ namespace Domain.Supplier
         public bool Active { get; set; }
         public bool IsInternal { get; set; }
         public bool IsManager { get; set; }
-        public List<SuppliierSeviceConfig> SuppliierSeviceConfigs { get; set; }
-    }
-    internal class SuppliierSeviceConfig
-    {
-        public Guid Id { get; set; }
-        public int SuplierId { get; set; }
-        public int ServiceId { get; set; }
-        public bool Active { get; set; }
-        public bool IsInternal { get; set; }
     }
     public class Id<T>
     {
