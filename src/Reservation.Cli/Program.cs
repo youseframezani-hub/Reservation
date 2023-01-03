@@ -1,15 +1,31 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Reservation.Domain;
 using Reservation.Repositories;
 using Reservation.Repositories.Abstractions;
+using Reservation.Repositories.Extensions;
 
-IServiceProvider serviceProvider = ConfigureServices();
+var host = Host.CreateDefaultBuilder();
+host.ConfigureServices((context, services) =>
+{
+
+})
 
 IServiceProvider ConfigureServices()
 {
     var services = new ServiceCollection();
-    services.AddScoped<ICustomerRepository, CustomerRepository>();
+    services.ConfigureRepository();
     return services.BuildServiceProvider();
 }
+
+var repo = serviceProvider.GetRequiredService<ICustomerRepository>();
+await repo.AddEntityAsync(new Customer()
+{
+    Email = "test@test.com",
+    Name = "Test"
+});
+var all = await repo.GetAllAsync();
+Console.Out.WriteLine($"number of customers: {all.Count()}");
 
 ShowMenu();
 int userInput = ReadUserInput();
