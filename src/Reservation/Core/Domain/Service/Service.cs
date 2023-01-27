@@ -9,34 +9,52 @@ namespace Domain.Service
 {
     internal class Service
     {
+        public Service(GuidId id, string title, string? description, TimeSpan duration, TimeInterval? timeInterval, int capacity, int priority, Currency price, bool isActive, bool isInternal, List<SupplierServiceConfig>? supplierConfigs)
+        {
+            Id = id;
+            Title = title;
+            Description = description;
+            Duration = duration;
+            TimeInterval = timeInterval;
+            Capacity = capacity;
+            Priority = priority;
+            Price = price;
+            _isActive = isActive;
+            _isInternal = isInternal;
+            _supplierConfigs = supplierConfigs;
+        }
         public GuidId Id { get; init; }
         public string Title { get; private set; }
-        public string Description { get; private set; }
+        public string? Description { get; private set; }
         public TimeSpan Duration { get; private set; }
-        public TimeInterval TimeInterval { get; private set; }
+        public TimeInterval? TimeInterval { get; private set; }
         public int Capacity { get; private set; }
         public int Priority { get; private set; }
         public Currency Price { get; private set; }
         private bool _isActive;
         private bool _isInternal;
-        private List<SupplierServiceConfig> _supplierConfigs;
+        private List<SupplierServiceConfig>? _supplierConfigs;
 
-
-        public void Update(string title, string description, Currency price, TimeInterval timeInterval, int capacity)
+        public static Service Create(string title, string? description, Currency price, TimeSpan duration, int capacity, int priority)
+        {
+            return new Service(GuidId.Create(), title ?? throw new ArgumentNullException(nameof(title)), description,
+                duration, null, capacity != 0 ? capacity : throw new ArgumentNullException(nameof(price)), priority, price ?? throw new ArgumentNullException(nameof(price)), true, false, null);
+        }
+        public void Update(string title, string description, Currency price, TimeSpan duration, int capacity)
         {
             Title = title;
             Description = description;
             Price = price;
-            TimeInterval = timeInterval;
+            Duration = duration;
             Capacity = capacity;
         }
         public void SetTimeInterval(TimeInterval timeInterval)
         {
-
+            TimeInterval = timeInterval;
         }
         public void SetPriority(int priority)
         {
-
+            Priority = priority;
         }
         public bool IsActive(GuidId? supplierId = null)
         {
@@ -54,7 +72,7 @@ namespace Domain.Service
                 return;
             }
 
-            var oldConfig = _supplierConfigs.FirstOrDefault(s => s.SupplierId == supplierId);
+            var oldConfig = _supplierConfigs?.FirstOrDefault(s => s.SupplierId == supplierId);
             var newConfig = oldConfig == null ? new SupplierServiceConfig(supplierId, value, _isInternal) : oldConfig with { IsActive = value };
 
             SetSupplierConfig(newConfig);
@@ -67,7 +85,7 @@ namespace Domain.Service
                 return;
             }
 
-            var oldConfig = _supplierConfigs.FirstOrDefault(s => s.SupplierId == supplierId);
+            var oldConfig = _supplierConfigs?.FirstOrDefault(s => s.SupplierId == supplierId);
             var newConfig = oldConfig == null ? new SupplierServiceConfig(supplierId, _isActive, value) : oldConfig with { IsInternal = value };
 
             SetSupplierConfig(newConfig);
