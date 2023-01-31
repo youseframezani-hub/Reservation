@@ -31,8 +31,8 @@ namespace Domain.Service
         public int Capacity { get; private set; }
         public int Priority { get; private set; }
         public Currency Price { get; private set; }
-        private bool _isActive;
         private bool _isInternal;
+        private bool _isActive;
         private List<SupplierServiceConfig>? _supplierConfigs;
 
         public static Service Create(string title, string? description, Currency price, TimeSpan duration, int capacity, int priority)
@@ -58,39 +58,46 @@ namespace Domain.Service
         }
         public bool IsActive(GuidId? supplierId = null)
         {
-            return supplierId == null ? _isActive : _supplierConfigs?.FirstOrDefault(s => s.SupplierId == supplierId)?.IsActive ?? false;
+            if (DeActivetedForOrganization())
+                return false;
+
+            var supplierConfig = _supplierConfigs?.FirstOrDefault(s => s.SupplierId == supplierId);
+            if (supplierConfig == null)
+                return true;
+
+            return supplierConfig.IsActive;
+
+            bool DeActivetedForOrganization() => _isActive == false;
         }
         public bool IsInternal(GuidId? supplierId = null)
         {
-            return supplierId == null ? _isInternal : _supplierConfigs?.FirstOrDefault(s => s.SupplierId == supplierId)?.IsInternal ?? false;
-        }
-        public void SetActive(GuidId? supplierId, bool value)
-        {
-            if (supplierId == null)
-            {
-                _isActive = value;
-                return;
-            }
+            if (IsInternalForOrganization())
+                return true;
 
+            var supplierConfig = _supplierConfigs?.FirstOrDefault(s => s.SupplierId == supplierId);
+            if (supplierConfig == null)
+                return false;
+
+            return supplierConfig.IsInternal;
+
+            bool IsInternalForOrganization() => _isInternal == true;
+        }
+        public void SetActive(bool value) => _isActive = value;
+        public void SetActive(GuidId supplierId, bool value)
+        {
             var oldConfig = _supplierConfigs?.FirstOrDefault(s => s.SupplierId == supplierId);
             var newConfig = oldConfig == null ? new SupplierServiceConfig(supplierId, value, _isInternal) : oldConfig with { IsActive = value };
 
             SetSupplierConfig(newConfig);
         }
-        public void SetInternal(GuidId? supplierId, bool value)
+        public void SetInternal(bool value) => _isInternal = value;
+        public void SetInternal(GuidId supplierId, bool value)
         {
-            if (supplierId == null)
-            {
-                _isInternal = value;
-                return;
-            }
-
             var oldConfig = _supplierConfigs?.FirstOrDefault(s => s.SupplierId == supplierId);
             var newConfig = oldConfig == null ? new SupplierServiceConfig(supplierId, _isActive, value) : oldConfig with { IsInternal = value };
 
             SetSupplierConfig(newConfig);
         }
-
         private void SetSupplierConfig(SupplierServiceConfig newConfig)
         {
             if (_supplierConfigs == null)
