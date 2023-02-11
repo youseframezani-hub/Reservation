@@ -1,6 +1,7 @@
 ﻿using Domain.Schedule;
-using Domain.Service;
+
 using Domain.Supplier;
+using Reservation.Core;
 
 namespace Domain.Appointment;
 
